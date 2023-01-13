@@ -1,7 +1,5 @@
 const VERSION = "0.1.0";
 
-import * as mutex from "npm:async-mutex";
-
 const loadEnvs = () => {
   const env: Record<string, unknown> = {};
 
@@ -45,7 +43,6 @@ type Data = {
 
 const db = {
   path: DB_PATH,
-  mutex: new mutex.Mutex(),
 
   save: async function (o: Data) {
     const data = JSON.stringify(o);
@@ -111,16 +108,14 @@ const handleSubscribeCommand: Handler = async (b, m) => {
     return;
   }
 
-  await db.mutex.runExclusive(async () => {
-    const authorId = String(m.authorId);
+  const authorId = String(m.authorId);
 
-    const data = await db.load();
-    if (!data[authorId]) data[authorId] = { subscribed: [] };
+  const data = await db.load();
+  if (!data[authorId]) data[authorId] = { subscribed: [] };
 
-    data[authorId].subscribed.push(n);
+  data[authorId].subscribed.push(n);
 
-    await db.save(data);
-  });
+  await db.save(data);
 
   await discordeno.sendMessage(b, m.channelId, {
     content: "多分, 購読してる.",
@@ -145,18 +140,14 @@ const handleUnsubscribeCommand: Handler = async (b, m) => {
     return;
   }
 
-  await db.mutex.runExclusive(async () => {
-    const authorId = String(m.authorId);
+  const authorId = String(m.authorId);
 
-    const data = await db.load();
-    if (!data[authorId]) data[authorId] = { subscribed: [] };
+  const data = await db.load();
+  if (!data[authorId]) data[authorId] = { subscribed: [] };
 
-    data[authorId].subscribed = data[authorId].subscribed.filter(
-      (s) => s !== n,
-    );
+  data[authorId].subscribed = data[authorId].subscribed.filter((s) => s !== n);
 
-    await db.save(data);
-  });
+  await db.save(data);
 
   await discordeno.sendMessage(b, m.channelId, {
     content: "多分, 購読してない.",
@@ -165,7 +156,7 @@ const handleUnsubscribeCommand: Handler = async (b, m) => {
 };
 
 const handleDefault: Handler = async (b, m) => {
-  const data = await db.mutex.runExclusive(() => db.load());
+  const data = await db.load();
   const userIds = [];
   for (const [k, v] of Object.entries(data)) {
     if (v.subscribed.includes(String(m.channelId))) userIds.push(k);
