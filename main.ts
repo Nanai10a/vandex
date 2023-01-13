@@ -71,8 +71,7 @@ import * as discordeno from "https://deno.land/x/discordeno/mod.ts";
 
 const bot = discordeno.createBot({
   token: BOT_TOKEN,
-  intents:
-    discordeno.Intents.DirectMessages |
+  intents: discordeno.Intents.DirectMessages |
     discordeno.Intents.GuildMessages |
     discordeno.Intents.MessageContent,
 });
@@ -84,7 +83,7 @@ const channelIds = (await discordeno.getChannels(bot, GUILD_ID))
 type Handler = (
   bot: discordeno.Bot,
   message: discordeno.Message,
-  signal: unknown
+  signal: unknown,
 ) => void | Promise<void>;
 
 const ignoreBot: Handler = (_, m, s) => {
@@ -153,7 +152,7 @@ const handleUnsubscribeCommand: Handler = async (b, m) => {
     if (!data[authorId]) data[authorId] = { subscribed: [] };
 
     data[authorId].subscribed = data[authorId].subscribed.filter(
-      (s) => s !== n
+      (s) => s !== n,
     );
 
     await db.save(data);
@@ -193,7 +192,7 @@ const handleDefault: Handler = async (b, m) => {
     userIds.map(async (userId) => {
       const channel = await bot.helpers.getDmChannel(userId);
       await discordeno.sendMessage(b, channel.id, { embeds: [embed] });
-    })
+    }),
   );
 };
 
