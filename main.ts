@@ -138,7 +138,7 @@ const handleUnsubscribeCommand: Handler = async (b, m) => {
     await discordeno.getChannel(b, id);
   } catch {
     await discordeno.sendMessage(b, m.channelId, {
-      content: `\`${n}\` は \`bigint\` ではないらしい.`,
+      content: `\`${n}\` という購読先は正しくないらしい.`,
       messageReference: { failIfNotExists: false, messageId: m.id },
     });
 
