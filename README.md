@@ -31,7 +31,7 @@ wrote with ja:
 
 ### 購読
 
-"-times" に送信された message を別チャンネルに転送します.
+"-times" に送信された message を別チャンネルに転送します.\
 また, Bot からのメッセージの一切は除外されます.
 
 現状, 転送先は**購読を指定した user の direct message** に限定されます.
