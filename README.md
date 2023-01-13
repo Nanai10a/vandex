@@ -6,8 +6,8 @@ _Approvers' "-times" helper Bot_
 
 ## roadmap
 
-[ ] `v0.2` : rewrite all
-[ ] `v0.1` : initial implement
+- [ ] `v0.2` : rewrite all
+- [ ] `v0.1` : initial implement
 
 ## usage
 
