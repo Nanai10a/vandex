@@ -158,7 +158,7 @@ const handleUnsubscribeCommand: Handler = async (b, m) => {
     await db.save(data);
   });
 
-  await discordeno.sendMessage(bot, m.channelId, {
+  await discordeno.sendMessage(b, m.channelId, {
     content: "多分, 購読してない.",
     messageReference: { failIfNotExists: false, messageId: m.id },
   });
@@ -172,7 +172,7 @@ const handleDefault: Handler = async (b, m) => {
   }
 
   const author = await discordeno.getUser(b, m.authorId);
-  const url = bot.helpers.getAvatarURL(author.id, author.discriminator, {
+  const url = b.helpers.getAvatarURL(author.id, author.discriminator, {
     avatar: author.avatar,
     format: "webp",
   });
@@ -190,7 +190,7 @@ const handleDefault: Handler = async (b, m) => {
 
   await Promise.all(
     userIds.map(async (userId) => {
-      const channel = await bot.helpers.getDmChannel(userId);
+      const channel = await b.helpers.getDmChannel(userId);
       await discordeno.sendMessage(b, channel.id, { embeds: [embed] });
     }),
   );
